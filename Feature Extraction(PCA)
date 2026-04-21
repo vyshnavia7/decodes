@@ -1,0 +1,25 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.decomposition import PCA
+import pandas as pd
+
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+
+print("Shape:", X.shape, y.shape)
+
+# PCA
+pca = PCA(n_components=2)
+Z = pca.fit_transform(X)
+
+print("PCA Components:")
+print(pca.components_)
+
+print("Variance Ratio:")
+print(pca.explained_variance_ratio_)
+
+plt.scatter(Z[:,0], Z[:,1], c=y)
+plt.title("PCA")
+plt.show()
