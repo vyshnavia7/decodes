@@ -1,0 +1,12 @@
+mkdir mapreduce
+cd mapreduce
+mkdir classes
+nano WordCount.java  
+javac -classpath `hadoop classpath` -d classes WordCount.java
+ls classes
+jar -cvf wordcount.jar -C classes/ .
+jar -tf wordcount.jar
+nano count.txt  
+cat count.txt
+hadoop jar wordcount.jar WordCount count.txt output
+cat output/part-r-00000
