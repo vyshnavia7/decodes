@@ -1,0 +1,17 @@
+CREATE DATABASE shopping;
+USE shopping;
+
+CREATE TABLE shopping1(
+id INT,
+name STRING,
+price INT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+LOAD DATA LOCAL INPATH '/root/shop.txt'
+INTO TABLE shopping1;
+
+SELECT * FROM shopping1;
+DESCRIBE shopping1;
+SHOW TABLES;
