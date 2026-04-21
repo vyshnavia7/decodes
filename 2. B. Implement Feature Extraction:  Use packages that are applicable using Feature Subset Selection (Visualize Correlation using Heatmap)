@@ -1,0 +1,11 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+iris = pd.read_csv("iris.csv")
+
+sns.pairplot(iris.drop(['Id'], axis=1), hue='Species')
+plt.show()
+
+sns.heatmap(iris.corr(method='pearson').drop(['Id'], axis=1).drop(['Id'], axis=0), annot=True)
+plt.show()
