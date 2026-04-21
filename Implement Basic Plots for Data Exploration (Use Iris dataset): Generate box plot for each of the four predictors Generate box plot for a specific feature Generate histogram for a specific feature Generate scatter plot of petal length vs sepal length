@@ -1,0 +1,34 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("iris.csv")
+
+print(df)
+
+# Box plots
+sns.boxplot(x='class', y='sepal length', data=df)
+plt.title("Sepal Length")
+plt.show()
+
+sns.boxplot(x='class', y='sepal width', data=df)
+plt.title("Sepal Width")
+plt.show()
+
+sns.boxplot(x='class', y='petal length', data=df)
+plt.title("Petal Length")
+plt.show()
+
+# Histogram
+sns.histplot(x='sepal length', data=df)
+plt.title("Histogram")
+plt.show()
+
+# Scatter plot
+df.plot(kind='scatter', x='petal length', y='sepal length')
+plt.grid()
+plt.show()
+
+# Pair plot
+sns.pairplot(df)
+plt.show()
