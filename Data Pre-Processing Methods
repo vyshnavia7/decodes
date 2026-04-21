@@ -1,0 +1,51 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("auto-mpg.csv")
+
+sns.boxplot(x='mpg', data=df)
+plt.show()
+
+df.replace("?", np.nan, inplace=True)
+df['horsepower'] = pd.to_numeric(df['horsepower'])
+
+# IQR
+q1 = df.mpg.quantile(0.25)
+q3 = df.mpg.quantile(0.75)
+IQR = q3 - q1
+
+LL = q1 - 1.5 * IQR
+UL = q3 + 1.5 * IQR
+
+upper = np.where(df['mpg'] >= UL)
+lower = np.where(df['mpg'] <= LL)
+
+df.drop(upper[0], inplace=True)
+df.drop(lower[0], inplace=True)
+
+# Histogram
+sns.histplot(x='acceleration', data=df)
+plt.show()
+
+# Scatter
+df.plot(kind="scatter", x='acceleration', y='mpg')
+plt.grid()
+plt.show()
+
+# SECOND METHOD (IMPORTANT)
+q1 = df.acceleration.quantile(0.25)
+q3 = df.acceleration.quantile(0.75)
+IQR = q3 - q1
+
+LL = q1 - 1.5 * IQR
+UL = q3 + 1.5 * IQR
+
+arr = df['acceleration'].values
+true_index = (arr > LL) & (arr < UL)
+
+mean_val = np.mean(df['acceleration'][true_index])
+
+false_index = ~true_index
+df['acceleration'].values[false_index] = mean_val
