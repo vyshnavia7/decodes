@@ -1,0 +1,22 @@
+use bookDB
+
+db.createCollection("books")
+
+db.books.insertOne({name:"DBMS", price:500})
+
+db.books.insertMany([
+ {name:"OS", price:400},
+ {name:"CN", price:450}
+])
+
+db.books.find()
+
+db.books.find({price:500})
+
+db.books.updateOne({name:"OS"}, {$set:{price:420}})
+
+db.books.updateMany({}, {$set:{author:"ABC"}})
+
+db.books.deleteOne({name:"CN"})
+
+db.books.deleteMany({})
