@@ -1,0 +1,15 @@
+start-dfs.sh
+start-yarn.sh
+jps
+
+hdfs dfs -mkdir /hadooplab
+hdfs dfs -mkdir /hadooplab/input
+
+echo "Welcome to Hadoop Lab Experiment" > sample.txt
+
+hdfs dfs -put sample.txt /hadooplab/input
+hdfs dfs -ls /hadooplab/input
+
+hdfs dfs -cat /hadooplab/input/sample.txt
+
+hdfs dfs -copyToLocal /hadooplab/input/sample.txt
