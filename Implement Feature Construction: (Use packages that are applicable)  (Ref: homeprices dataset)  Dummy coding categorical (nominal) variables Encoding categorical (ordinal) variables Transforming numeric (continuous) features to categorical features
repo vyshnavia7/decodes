@@ -1,0 +1,51 @@
+import pandas as pd
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder, OrdinalEncoder
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = pd.read_csv("homeprices.csv")
+
+print(df)
+
+# Dummy coding
+dummies = pd.get_dummies(df['town'])
+print("\nDummies:")
+print(dummies)
+
+# Drop one column
+dummies = dummies.drop(['west windsor'], axis='columns')
+
+# Merge
+merged = pd.concat([df, dummies], axis='columns')
+final = merged.drop(['town'], axis='columns')
+print("\nFinal dataset:")
+print(final)
+
+# One Hot Encoding
+ohe = OneHotEncoder(handle_unknown='ignore')
+X1 = ohe.fit_transform(df[['town']])
+X1 = pd.DataFrame(X1.toarray())
+X1 = X1.iloc[:,1:]
+print("\nOne Hot Encoding:")
+print(X1)
+
+# Label Encoding
+iris = pd.read_csv("D:\\iris.csv")
+le = LabelEncoder()
+iris['Species'] = le.fit_transform(iris['Species'])
+print("\nLabel Encoded:")
+print(iris)
+
+# Convert continuous to categorical
+plt.hist(iris['PetalWidthCm'], edgecolor='w')
+plt.show()
+
+iris['petal_category'] = pd.cut(iris['PetalWidthCm'], bins=[0,1,2,2.5])
+print("\nCategorical feature:")
+print(iris['petal_category'])
+
+# Ordinal Encoding
+encoder = OrdinalEncoder()
+iris['petal_category'] = encoder.fit_transform(iris[['petal_category']])
+print("\nOrdinal Encoded:")
+print(iris)
