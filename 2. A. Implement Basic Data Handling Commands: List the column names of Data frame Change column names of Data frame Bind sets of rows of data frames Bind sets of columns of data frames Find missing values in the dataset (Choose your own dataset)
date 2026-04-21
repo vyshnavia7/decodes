@@ -1,0 +1,35 @@
+import pandas as pd
+
+df = pd.read_csv("data1.csv")
+
+# Column names
+print("Columns:")
+print(df.columns)
+
+# Rename column
+df.rename(columns={"model year":"year"}, inplace=True)
+print("\nAfter renaming:")
+print(df.columns)
+
+# Access a column
+print("\nOrigin column:")
+print(df['origin'])
+
+# Bind rows
+df1 = df.copy()
+df2 = df.copy()
+df3 = pd.concat([df1, df2]).reset_index(drop=True)
+print("\nAfter row binding:")
+print(df3)
+
+# Bind columns
+df4 = pd.concat([df1, df2], axis=1).reset_index(drop=True)
+print("\nAfter column binding:")
+print(df4)
+
+# Check missing values
+print("\nMissing values:")
+print(df.isnull())
+
+print("\nMissing values count:")
+print(df.isnull().sum())
