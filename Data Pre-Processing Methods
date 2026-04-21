@@ -1,51 +1,81 @@
 import pandas as pd
 import numpy as np
-import seaborn as sns
+from scipy import stats
 import matplotlib.pyplot as plt
+import seaborn as sns
 
+# Step 1: Load dataset
 df = pd.read_csv("auto-mpg.csv")
+print("Initial Data:")
+print(df.head())
 
-sns.boxplot(x='mpg', data=df)
-plt.show()
-
+# -------------------------------
+# 🔹 HANDLE MISSING VALUES
 df.replace("?", np.nan, inplace=True)
 df['horsepower'] = pd.to_numeric(df['horsepower'])
 
-# IQR
-q1 = df.mpg.quantile(0.25)
-q3 = df.mpg.quantile(0.75)
-IQR = q3 - q1
+print("\nMissing Values Before:")
+print(df.isnull().sum())
 
-LL = q1 - 1.5 * IQR
-UL = q3 + 1.5 * IQR
+# Imputation (Mean)
+df['horsepower'].fillna(df['horsepower'].mean(), inplace=True)
 
-upper = np.where(df['mpg'] >= UL)
-lower = np.where(df['mpg'] <= LL)
+print("\nMissing Values After:")
+print(df.isnull().sum())
 
-df.drop(upper[0], inplace=True)
-df.drop(lower[0], inplace=True)
+# -------------------------------
+# IQR METHOD (Outlier Removal)
+Q1 = df['mpg'].quantile(0.25)
+Q3 = df['mpg'].quantile(0.75)
+IQR = Q3 - Q1
 
-# Histogram
-sns.histplot(x='acceleration', data=df)
+LL = Q1 - 1.5 * IQR
+UL = Q3 + 1.5 * IQR
+
+df = df[(df['mpg'] >= LL) & (df['mpg'] <= UL)]
+
+# -------------------------------
+# STANDARD DEVIATION METHOD
+mean = df['mpg'].mean()
+std = df['mpg'].std()
+
+LL_sd = mean - 3 * std
+UL_sd = mean + 3 * std
+
+df = df[(df['mpg'] >= LL_sd) & (df['mpg'] <= UL_sd)]
+
+# -------------------------------
+# Z-SCORE METHOD
+z = np.abs(stats.zscore(df.select_dtypes(include=[np.number])))
+df = df[(z < 3).all(axis=1)]
+
+# -------------------------------
+# PERCENTILE METHOD
+lower = df['mpg'].quantile(0.01)
+upper = df['mpg'].quantile(0.99)
+
+df = df[(df['mpg'] >= lower) & (df['mpg'] <= upper)]
+
+# -------------------------------
+# CAPPING OF VALUES
+upper_cap = df['mpg'].quantile(0.95)
+lower_cap = df['mpg'].quantile(0.05)
+
+df['mpg'] = np.where(df['mpg'] > upper_cap, upper_cap, df['mpg'])
+df['mpg'] = np.where(df['mpg'] < lower_cap, lower_cap, df['mpg'])
+
+# -------------------------------
+# Visualization
+sns.boxplot(x='mpg', data=df)
+plt.title("After Preprocessing")
 plt.show()
 
-# Scatter
-df.plot(kind="scatter", x='acceleration', y='mpg')
-plt.grid()
+sns.histplot(df['mpg'])
+plt.title("Distribution after Cleaning")
 plt.show()
 
-# SECOND METHOD (IMPORTANT)
-q1 = df.acceleration.quantile(0.25)
-q3 = df.acceleration.quantile(0.75)
-IQR = q3 - q1
-
-LL = q1 - 1.5 * IQR
-UL = q3 + 1.5 * IQR
-
-arr = df['acceleration'].values
-true_index = (arr > LL) & (arr < UL)
-
-mean_val = np.mean(df['acceleration'][true_index])
-
-false_index = ~true_index
-df['acceleration'].values[false_index] = mean_val
+# -------------------------------
+# Final Output
+print("\nProcessed Data:")
+print(df.head())
+print("\nFinal Shape:", df.shape)
