@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("auto-mpg.csv")
+
+# Mean, Median, Mode
+print(df['displacement'].mean())
+print(df['displacement'].median())
+print(df['displacement'].mode())
+print(df['displacement'].value_counts())
+
+# Describe
+print(df.describe())
+
+# Variance & Std
+print(df.var())
+print(df.std())
+
+# Quartiles
+q1 = np.percentile(df['displacement'], 25)
+q2 = np.percentile(df['displacement'], 50)
+q3 = np.percentile(df['displacement'], 75)
+
+IQR = q3 - q1
+
+print(q1, q2, q3, IQR)
