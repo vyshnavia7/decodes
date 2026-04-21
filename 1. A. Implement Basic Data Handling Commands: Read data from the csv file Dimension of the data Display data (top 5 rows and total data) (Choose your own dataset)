@@ -1,0 +1,18 @@
+import pandas as pd
+
+df = pd.read_csv("data1.csv")
+
+print("Dataset:")
+print(df)
+
+print("\nShape:")
+print(df.shape)
+
+print("\nColumns:")
+print(df.columns)
+
+print("\nTop 5 rows:")
+print(df.head())
+
+print("\nLast 5 rows:")
+print(df.tail())
