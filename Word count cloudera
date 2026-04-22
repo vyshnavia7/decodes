@@ -1,0 +1,9 @@
+for wrd count 
+just run this cmd 
+
+
+
+
+wget --no-check-certificate http://raw.githubusercontent.com/arbazahmed07/wc/main/run.sh
+chmod +x run.sh
+bash run.sh
