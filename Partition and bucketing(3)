@@ -12,6 +12,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ',';
 
 LOAD DATA LOCAL INPATH '/root/shop.txt'
-INTO TABLE shopping1;
+INTO TABLE shopping1
+PARTITION(category='electronics');
 
 SHOW PARTITIONS shopping1;
