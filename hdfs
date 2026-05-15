@@ -1,0 +1,13 @@
+gedit sample.txt
+
+cat sample.txt
+
+hdfs dfs -mkdir /input
+
+hdfs dfs  -put sample.txt /input
+
+hdfs dfs  -ls /input
+
+hdfs dfs -cat /input/sample.txt
+
+hdfs dfs -copyToLocal  /input/sample.txt
